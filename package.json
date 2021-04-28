@@ -1,0 +1,74 @@
+{
+	"name": "compilation-react-ts-scss",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"@material-ui/core": "^4.11.3",
+		"@rematch/core": "^1.4.0",
+		"axios": "^0.21.1",
+		"connected-react-router": "^6.9.1",
+		"react": "^17.0.1",
+		"react-dom": "^17.0.1",
+		"react-redux": "^7.2.2",
+		"react-router": "^5.2.0",
+		"react-router-dom": "^5.2.0",
+		"react-scripts-scss-ts": "2.17.1",
+		"redux": "^4.0.5"
+	},
+	"scripts": {
+		"start": "react-scripts-ts start",
+		"build": "GENERATE_SOURCEMAP=false react-scripts-ts build",
+		"test": "react-scripts-ts test --coverage --env=jsdom",
+		"eject": "react-scripts-ts eject"
+	},
+	"devDependencies": {
+		"@bem-react/classname": "^1.5.9",
+		"@commitlint/cli": "^12.0.1",
+		"@commitlint/config-conventional": "^12.0.1",
+		"@types/jest": "^26.0.20",
+		"@types/node": "^14.14.32",
+		"@types/react": "^17.0.3",
+		"@types/react-dom": "^17.0.2",
+		"@types/react-redux": "^7.1.16",
+		"@types/react-router-dom": "^5.1.7",
+		"@typescript-eslint/eslint-plugin": "^4.17.0",
+		"@typescript-eslint/parser": "^4.17.0",
+		"eslint": "^7.21.0",
+		"eslint-config-airbnb": "^18.2.1",
+		"eslint-config-airbnb-typescript": "^12.3.1",
+		"eslint-plugin-react": "^7.22.0",
+		"eslint-plugin-react-hooks": "^4.2.0",
+		"husky": "4.3.8",
+		"lint-staged": "^10.5.4",
+		"typescript": "^4.2.3"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged --allow-empty",
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+		}
+	},
+	"jest": {
+		"moduleNameMapper": {
+			"components": "<rootDir>/src/components/",
+			"containers": "<rootDir>/src/containers/"
+		},
+		"coverageReporters": [
+			"text",
+			"html"
+		]
+	},
+	"commitlint": {
+		"extends": [
+			"@commitlint/config-conventional"
+		]
+	},
+	"lint-staged": {
+		"*.{js,ts,tsx,jsx}": [
+			"eslint --fix"
+		]
+	},
+	"eslintConfig": {
+		"extends": "react-app"
+	}
+}

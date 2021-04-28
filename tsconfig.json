@@ -1,0 +1,54 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"outDir": "build/dist",
+		"module": "esnext",
+		"target": "ES6",
+		"lib": [
+			"es6",
+			"dom"
+		],
+		"sourceMap": true,
+		"allowJs": true,
+		"jsx": "react",
+		"moduleResolution": "node",
+		"rootDir": "src",
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"suppressImplicitAnyIndexErrors": true,
+		"noUnusedLocals": true,
+		"allowSyntheticDefaultImports": true,
+		"paths": {
+			"components": [
+				"src/components/"
+			],
+			"containers": [
+				"src/containers/"
+			],
+			"pages": [
+				"src/pages/"
+			],
+			"store": [
+				"src/redux/store/"
+			],
+			"api": [
+				"src/redux/api/"
+			],
+			"localStore": [
+				"src/redux/localStore/"
+			]
+		}
+	},
+	"exclude": [
+		"node_modules",
+		"build",
+		"scripts",
+		"acceptance-tests",
+		"webpack",
+		"jest",
+		"coverage"
+	],
+}

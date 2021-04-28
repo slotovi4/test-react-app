@@ -1,0 +1,48 @@
+.Home {
+	text-align: center;
+
+	&-Logo {
+		animation: App-logo-spin infinite 20s linear;
+		height: 80px;
+	}
+
+	&-Header {
+		background-color: #222;
+		height: 150px;
+		padding: 20px;
+		color: white;
+	}
+
+	&-Select {
+		width: 100px;
+	}
+
+	&-FavoriteIcon {
+		-webkit-mask: url(favorite.svg) no-repeat center;
+  		mask: url(favorite.svg) no-repeat center;
+		width: 20px;
+		height: 20px;
+		background-color: gray;
+		display: inline-block;
+		cursor: pointer;
+		opacity: 0.8;
+		transition: opacity 0.3s ease;
+
+		&_active {
+			background-color: green;
+		}
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+}
+
+@keyframes App-logo-spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
