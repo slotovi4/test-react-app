@@ -27,6 +27,7 @@
 		cursor: pointer;
 		opacity: 0.8;
 		transition: opacity 0.3s ease;
+		margin-left: 20px;
 
 		&_active {
 			background-color: green;
@@ -35,6 +36,11 @@
 		&:hover {
 			opacity: 1;
 		}
+	}
+
+	&-FavoriteBlock {
+		display: flex;
+    	justify-content: flex-end;
 	}
 }
 

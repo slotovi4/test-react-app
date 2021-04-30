@@ -1,9 +1,14 @@
 import { instance } from './config';
-import { ICharacter, ISortCharacterListData } from './types';
+import { ICharacter, ISortCharacterListData, ICharacterPagination } from './types';
 import { createCharacterSearchParams } from './helpers';
 import { AxiosResponse, AxiosError } from 'axios';
 
 export default {
+	/**
+	 * Получить список Character
+	 * @param sortData данные сортировки для Character
+	 * @returns список Character
+	 */
 	getCharacterList: (sortData?: ISortCharacterListData) =>
 		instance.get(`character/${createCharacterSearchParams(sortData)}`)
 			.then((response: AxiosResponse<ISuccessCharacterRequestResult>) => {
@@ -14,7 +19,10 @@ export default {
 			})
 			.then((e?: AxiosResponse<ISuccessCharacterRequestResult>) => {
 				if (e) {
-					return e.data.results;
+					return {
+						characterList: e.data.results,
+						pagination: e.data.info
+					};
 				}
 
 				return null;
@@ -25,11 +33,6 @@ export * from './types';
 export * from './helpers';
 
 interface ISuccessCharacterRequestResult {
-	info: {
-		count: number | null;
-		next: number | null;
-		pages: number | null;
-		prev: number | null;
-	};
+	info: ICharacterPagination;
 	results: ICharacter[];
 }

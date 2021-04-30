@@ -3,21 +3,39 @@ import {
 	getFavoriteCharacterList,
 	deleteFavoriteCharacter
 } from 'localStore';
+import api, {
+	ICharacter,
+	ICharacterPagination,
+	ISortCharacterListData,
+} from 'api';
 import { createModel } from '@rematch/core';
-import api, { ICharacter, ISortCharacterListData } from 'api';
 
 const initialState: IState = {
 	characterList: null,
-	favoriteCharacterList: getFavoriteCharacterList()
+	favoriteCharacterList: getFavoriteCharacterList(),
+	pagination: null,
+	processing: false
 };
 
 const character = createModel({
 	state: initialState,
 	reducers: {
+		updateProcessing(state: IState, processing: IState['processing']) {
+			return {
+				...state,
+				processing
+			};
+		},
 		updateCharacterList(state: IState, characterList: IState['characterList']) {
 			return {
 				...state,
 				characterList
+			};
+		},
+		updateCharacterPagination(state: IState, pagination: IState['pagination']) {
+			return {
+				...state,
+				pagination
 			};
 		},
 		updateFavoriteCharacterList(state: IState, favoriteCharacterList: IState['favoriteCharacterList']) {
@@ -29,9 +47,17 @@ const character = createModel({
 	},
 	effects: dispatch => ({
 		async getCharactersList(sortData?: ISortCharacterListData) {
-			const characterList = await api.getCharacterList(sortData);
+			this.updateProcessing(true);
+			const result = await api.getCharacterList(sortData);
+			this.updateProcessing(false);
 
-			this.updateCharacterList(characterList);
+			if (result) {
+				this.updateCharacterList(result.characterList);
+				this.updateCharacterPagination(result.pagination);
+			} else {
+				this.updateCharacterList(null);
+				this.updateCharacterPagination(null);
+			}
 		},
 		addFavoriteCharacter(favoriteCharacter: ICharacter, rootState) {
 			const state: IState = rootState.character;
@@ -57,4 +83,6 @@ export default character;
 interface IState {
 	characterList: ICharacter[] | null;
 	favoriteCharacterList: ICharacter[];
+	pagination: ICharacterPagination | null;
+	processing: boolean;
 }

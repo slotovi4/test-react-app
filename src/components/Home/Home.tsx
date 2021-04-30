@@ -3,7 +3,7 @@ import {
 	ICharacter,
 	ISortCharacterListData,
 	TCharacterGender,
-	TCharacterStatus
+	TCharacterStatus,
 } from 'api';
 import {
 	TextField,
@@ -11,6 +11,7 @@ import {
 	TableHead,
 	TableCell,
 	TableBody,
+	TablePagination,
 	Table
 } from '@material-ui/core';
 import { cn } from '@bem-react/classname';
@@ -26,24 +27,39 @@ const Home = ({
 	onChangeSort,
 	sortData,
 	favoriteCharacterList,
-	addFavoriteCharacter
+	addFavoriteCharacter,
+	pagesCount,
+	processing,
+	onChangePage,
 }: IProps) => {
 	const home = cn('Home');
 
 	const onSortName = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-		onChangeSort(({ name: e.target.value }));
+		if (!processing) {
+			onChangeSort(({ name: e.target.value }));
+		}
 	};
 
 	const onSortGender = (event: React.ChangeEvent<HTMLSelectElement>) => {
-		const gender = event.target.value as TCharacterGender | undefined;
+		if (!processing) {
+			const gender = event.target.value as TCharacterGender | undefined;
 
-		onChangeSort(({ gender }));
+			onChangeSort(({ gender }));
+		}
 	};
 
 	const onSortStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
-		const status = event.target.value as TCharacterStatus | undefined;
+		if (!processing) {
+			const status = event.target.value as TCharacterStatus | undefined;
 
-		onChangeSort(({ status }));
+			onChangeSort(({ status }));
+		}
+	};
+
+	const onChangePageAsync = (event: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
+		if (!processing) {
+			onChangePage(page);
+		}
 	};
 
 	const isFavorite = (characterId: number) => Boolean(favoriteCharacterList?.find(character => character.id === characterId));
@@ -78,6 +94,7 @@ const Home = ({
 									onChange={onSortGender}
 									items={genderSelectValuesList}
 									value={sortData.gender}
+									disabled={processing}
 								/>
 							</TableCell>
 							<TableCell align="right">
@@ -87,6 +104,7 @@ const Home = ({
 									onChange={onSortStatus}
 									items={statusSelectValuesList}
 									value={sortData.status}
+									disabled={processing}
 								/>
 							</TableCell>
 						</TableRow>
@@ -100,11 +118,13 @@ const Home = ({
 								<TableCell align="right">{character.name}</TableCell>
 								<TableCell align="right">{character.gender}</TableCell>
 								<TableCell align="right">
-									{character.status}
-									<div
-										className={home('FavoriteIcon', { active: isFavorite(character.id) })}
-										onClick={addFavorite(character)}
-									/>
+									<div className={home('FavoriteBlock')}>
+										{character.status}
+										<div
+											className={home('FavoriteIcon', { active: isFavorite(character.id) })}
+											onClick={addFavorite(character)}
+										/>
+									</div>
 								</TableCell>
 							</TableRow>
 						)) : (
@@ -114,6 +134,17 @@ const Home = ({
 						)}
 					</TableBody>
 				</Table>
+				{characterList ? (
+					<TablePagination
+						component="div"
+						count={pagesCount || 0}
+						rowsPerPage={1}
+						page={sortData.page ? sortData.page - 1 : 0}
+						onChangePage={onChangePageAsync}
+						rowsPerPageOptions={[]}
+						labelDisplayedRows={({ from, count }) => !processing ? `${from} of ${count}` : 'load...'}
+					/>
+				) : null}
 			</section>
 		</section>
 	);
@@ -125,6 +156,9 @@ interface IProps {
 	characterList: ICharacter[] | null;
 	favoriteCharacterList: ICharacter[] | null;
 	sortData: ISortCharacterListData;
+	pagesCount?: number | null;
+	processing: boolean;
 	addFavoriteCharacter: (character: ICharacter) => void;
 	onChangeSort: (sortData?: ISortCharacterListData) => void;
+	onChangePage: (page?: number) => void;
 }
